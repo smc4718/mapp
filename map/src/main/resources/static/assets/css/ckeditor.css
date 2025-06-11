@@ -1,0 +1,52 @@
+@charset "UTF-8";
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css');
+
+.ck.ck-editor {
+    max-width: 1000px;
+}
+.ck-editor__editable {
+    min-height: 400px;
+}
+.ck-content {
+    color: gray;
+    margin-bottom: -100px; /* 문단 간의 여백을 줄임 */
+    line-height: 0.1px; /* 줄 간격을 적절히 조정 */
+}
+#ckeditor {
+    border: 1px solid silver;
+}
+
+.ck.ck-content .image {
+    position: relative;
+}
+.ck.ck-content .image img {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.ck.ck-content .image::before {
+    content: '';
+    padding-top: 100%;
+    display: block;
+}
+
+.contentsArea .image-style-side {
+    float: right;
+    margin-left: var(--ck-image-style-spacing);
+}
+.contentsArea figure.image {
+    margin: .9em auto;
+    text-align: center;
+}
+.contentsArea .image.image_resized {
+    display: block;
+    box-sizing: border-box;
+}
+.contentsArea .image.image_resized img {
+    width: 30%;
+}

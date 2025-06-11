@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+    <!-- 설정 -->
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+
+    <typeAliases>
+        <typeAlias alias="UserDto"            type="com.pyj.paris.dto.UserDto"/>
+        <typeAlias alias="NoticeDto"          type="com.pyj.paris.dto.NoticeDto"/>
+        <typeAlias alias="NoticeImageDto"     type="com.pyj.paris.dto.NoticeImageDto"/>
+        <typeAlias alias="ReservationDto"     type="com.pyj.paris.dto.ReservationDto"/>
+        <typeAlias alias="GuideDto"           type="com.pyj.paris.dto.GuideDto"/>
+        <typeAlias alias="EventDto"           type="com.pyj.paris.dto.EventDto"/>
+        <typeAlias alias="EventImageDto"      type="com.pyj.paris.dto.EventImageDto"/>
+    </typeAliases>
+
+</configuration>
