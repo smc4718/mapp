@@ -17,15 +17,57 @@
         <result column="JOINED_AT"      property="joinedAt" />
     </resultMap>
 
+
+    <!-- 사용자 로그인용 쿼리 (ID와 PW가 모두 null이 아닌 경우에만 실행됨) -->
     <select id="getUser" parameterType="Map" resultType="UserDto">
-        SELECT USER_NO, ID, PW, NAME, GENDER, EMAIL, HP, REFERRAL_CODE, JOINED_AT
+        SELECT USER_NO, ID, PW, NAME, GENDER, EMAIL, HP, REFERRAL_CODE, ROLE, JOINED_AT
           FROM USER_T
         <where>
-            <if test="id != null">ID = #{id}</if>
-            <if test="pw != null">AND PW = #{pw}</if>
-            <if test="userNo != null">AND USER_NO = #{userNo}</if>
+            <if test="id != null and pw != null">
+                ID = #{id} AND PW = #{pw}
+            </if>
         </where>
     </select>
 
+    <!-- 회원 등록 -->
+    <insert id="insertUser" parameterType="UserDto">
+        INSERT INTO USER_T (
+            USER_NO
+          , ID
+          , PW
+          , NAME
+          , GENDER
+          , EMAIL
+          , HP
+          , REFERRAL_CODE
+          , ROLE
+          , JOINED_AT
+        ) VALUES (
+            USER_SEQ.NEXTVAL
+          , #{id}
+          , #{pw}
+          , #{name}
+          , #{gender}
+          , #{email}
+          , #{hp}
+          , #{referralCode}
+          , #{role}
+          , SYSDATE
+        )
+    </insert>
+
+    <!-- ID로 회원 조회 -->
+    <select id="findById" parameterType="String" resultType="UserDto">
+        SELECT *
+          FROM USER_T
+         WHERE ID = #{id}
+    </select>
+
+    <!-- 추천 코드로 회원 조회 -->
+    <select id="findByReferralCode" parameterType="String" resultType="UserDto">
+        SELECT *
+          FROM USER_T
+         WHERE REFERRAL_CODE = #{referralCode}
+    </select>
 
 </mapper>
