@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.pyj.paris.dao.NoticeMapper">
+<mapper namespace="com.pyj.mapp.dao.NoticeMapper">
 
     <resultMap id="NoticeMap" type="NoticeDto">
         <id     column="NOTICE_NO"  property="noticeNo" />
@@ -19,7 +19,6 @@
             <result     column="GENDER"          property="gender" />
             <result     column="EMAIL"           property="email" />
             <result     column="HP"              property="hp" />
-            <result     column="HP_SMS_YN"       property="hpSmsYn" />
             <result     column="JOINED_AT"       property="joinedAt" />
         </association>
     </resultMap>
@@ -32,9 +31,9 @@
 
     <!-- 공지 리스트 -->
     <select id="getNoticeList" parameterType="Map" resultMap="NoticeMap">
-        SELECT NOTICE_NO, USER_NO, TITLE, CONTENTS, HIT, CREATED_AT, ID, PW, NAME, GENDER, EMAIL, HP, HP_SMS_YN, JOINED_AT
+        SELECT NOTICE_NO, USER_NO, TITLE, CONTENTS, HIT, CREATED_AT, ID, PW, NAME, GENDER, EMAIL, HP, JOINED_AT
           FROM (SELECT N.NOTICE_NO, N.USER_NO, N.TITLE, N.CONTENTS, N.HIT, N.CREATED_AT,
-                       U.ID, U.PW, U.NAME, U.GENDER, U.EMAIL, U.HP, U.HP_SMS_YN, U.JOINED_AT,
+                       U.ID, U.PW, U.NAME, U.GENDER, U.EMAIL, U.HP, U.JOINED_AT,
                        ROW_NUMBER() OVER (ORDER BY N.NOTICE_NO DESC) AS RN
                   FROM NOTICE_T N LEFT JOIN USER_T U
                        ON N.USER_NO = U.USER_NO)
@@ -44,7 +43,7 @@
     <!-- 공지 상세 -->
     <select id="getNotice" parameterType="int" resultMap="NoticeMap">
         SELECT N.NOTICE_NO, N.USER_NO, N.TITLE, N.CONTENTS, N.HIT, N.CREATED_AT,
-               U.USER_NO, U.ID, U.PW, U.NAME, U.GENDER, U.EMAIL, U.HP, U.HP_SMS_YN, U.JOINED_AT
+               U.USER_NO, U.ID, U.PW, U.NAME, U.GENDER, U.EMAIL, U.HP, U.JOINED_AT
           FROM NOTICE_T N JOIN USER_T U
                ON N.USER_NO = U.USER_NO
          WHERE N.NOTICE_NO = #{noticeNo}

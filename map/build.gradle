@@ -47,15 +47,6 @@ dependencies {
 	// Jsoup
 	implementation 'org.jsoup:jsoup:1.18.3'
 
-	// jasypt 암복호화
-//	implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.5'
-
-	// Coolsms 문자 알림 서비스
-	implementation 'net.nurigo:sdk:4.2.7'
-
-	// 환경변수 불러오기
-	implementation 'io.github.cdimascio:java-dotenv:5.2.2'
-
 	// json
 	implementation 'org.json:json:20240303'
 }
