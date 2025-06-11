@@ -4,7 +4,7 @@ spring:
     hikari:
       driver-class-name: oracle.jdbc.OracleDriver
       jdbc-url: jdbc:oracle:thin:@localhost:1521:xe
-      username: MAP
+      username: MAPP
       password: 1111
 
   thymeleaf:
