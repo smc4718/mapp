@@ -17,7 +17,7 @@ public class UserDto {
     private String gender;
     private String email;
     private String hp;
-    private String hpSmsYn;
+    private String referralCode;
     private String joinedAt;
 
 }
