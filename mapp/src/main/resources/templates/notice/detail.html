@@ -63,8 +63,8 @@
         <div><strong>내용:</strong> <div th:utext="${notice.contents}" class="notice-content"></div></div>
 
         <div>
-            <th:block th:if="${session.user.userNo == 1 or session.user.userNo == notice.userDto.userNo}">
-                <form id="frm_btn" method="post">
+            <th:block th:if="${session.user.role == 'ADMIN' or session.user.userNo == notice.userDto.userNo}">
+            <form id="frm_btn" method="post">
                     <input type="hidden" name="noticeNo" th:value="${notice.noticeNo}">
                     <input type="hidden" name="title"    th:value="${notice.title}">
                     <input type="hidden" name="contents" th:value="${notice.contents}">

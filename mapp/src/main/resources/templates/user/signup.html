@@ -56,7 +56,8 @@
 
             <!-- 아이디 -->
             <div class="wrap-input100 validate-input">
-                <input class="input100" type="text" th:field="*{id}" placeholder="아이디" required />
+                <input class="input100" type="text" th:field="*{id}" id="idInput" placeholder="아이디" required />
+                <span id="idCheckMessage" style="font-size: 13px; color: red; display: block; margin-top: 5px;"></span>
             </div>
 
             <!-- 비밀번호 -->
@@ -128,6 +129,46 @@
 <script th:src="@{/assets/vendor/daterangepicker/daterangepicker.js}"></script>
 <script th:src="@{/assets/vendor/countdowntime/countdowntime.js}"></script>
 <script th:src="@{/assets/js/main2.js}"></script>
+
+<script>
+    let isIdDuplicated = false; // 아이디 중복 상태
+
+    $('#idInput').on('input', function () {
+        const id = $(this).val();
+        if (id.trim() === '') {
+            $('#idCheckMessage').text('');
+            isIdDuplicated = false;
+            return;
+        }
+
+        $.ajax({
+            url: '/user/check-id',
+            method: 'GET',
+            data: { id: id },
+            success: function (res) {
+                if (res.exists) {
+                    $('#idCheckMessage').text('이미 사용 중인 아이디입니다.');
+                    isIdDuplicated = true;
+                } else {
+                    $('#idCheckMessage').text('사용 가능한 아이디입니다.').css('color', 'green');
+                    isIdDuplicated = false;
+                }
+            },
+            error: function () {
+                $('#idCheckMessage').text('아이디 중복 확인 실패');
+                isIdDuplicated = true;
+            }
+        });
+    });
+
+    // 폼 제출 시 중복 아이디가 있을 경우 막기
+    $('.login100-form').on('submit', function (e) {
+        if (isIdDuplicated) {
+            alert('이미 사용 중인 아이디입니다.');
+            e.preventDefault(); // 폼 전송 막기
+        }
+    });
+</script>
 
 </body>
 </html>

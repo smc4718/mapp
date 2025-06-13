@@ -15,4 +15,6 @@ public interface UserService {
 
     //회원 가입 처리 (추천인 코드 유효성 포함)
     void registerUser(UserDto userDto);
+
+    UserDto findById(String id);
 }

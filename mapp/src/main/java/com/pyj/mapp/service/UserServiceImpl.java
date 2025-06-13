@@ -77,6 +77,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserDto findById(String id) {
+        return userMapper.findById(id);
+    }
+
+    @Override
     public UserDto getUser(String id) {
         return userMapper.getUser(Map.of("id", id));
     }

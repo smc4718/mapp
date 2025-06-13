@@ -7,10 +7,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RequestMapping("/user")
 @RequiredArgsConstructor
@@ -36,6 +35,13 @@ public class UserController {
             model.addAttribute("error", e.getMessage());
             return "user/signup";
         }
+    }
+
+    @GetMapping("/check-id")
+    @ResponseBody
+    public Map<String, Boolean> checkId(@RequestParam String id) {
+        boolean exists = userService.findById(id) != null;
+        return Map.of("exists", exists);
     }
 
     // 로그인 폼 이동
