@@ -217,7 +217,7 @@ public class NoticeServiceImpl implements NoticeService {
         }
 
         // CKEditor로 저장된 이미지의 경로를 JSON 형식으로 반환
-        String imageUrl = "/paris/notice/" + DateTimeFormatter.ofPattern("yyyy/MM/dd").format(LocalDate.now()) + "/" + filesystemName;
+        String imageUrl = "/mapp/notice/" + DateTimeFormatter.ofPattern("yyyy/MM/dd").format(LocalDate.now()) + "/" + filesystemName;
         return Map.of("uploaded", true, "url", imageUrl);
     }
 

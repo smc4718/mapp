@@ -15,7 +15,7 @@ public class PbFileUtils {
     // 공지 작성시 사용된 이미지가 저장될 경로 반환
     public String getNoticeImagePath() {
         LocalDate today = LocalDate.now();
-        String baseDir = System.getProperty("os.name").toLowerCase().contains("win") ? "D:/paris/notice/" : "/paris/notice/";
+        String baseDir = System.getProperty("os.name").toLowerCase().contains("win") ? "D:/mapp/notice/" : "/mapp/notice/";
         return baseDir + DateTimeFormatter.ofPattern("yyyy/MM/dd").format(today);
     }
 
@@ -23,7 +23,7 @@ public class PbFileUtils {
     // 공지 게시판 작성시 첨부한 파일이 저장될 경로 반환
     public String getUploadPath() {
         LocalDate today = LocalDate.now();
-        return "/paris/upload/" + DateTimeFormatter.ofPattern("yyyy/MM/dd").format(today);
+        return "/mapp/upload/" + DateTimeFormatter.ofPattern("yyyy/MM/dd").format(today);
     }
 
     public String save(String path, MultipartFile multipartFile) {
@@ -47,7 +47,7 @@ public class PbFileUtils {
 
     // 임시 파일이 저장될 경로 반환하기 (zip 파일)
     public String getTempPath() {
-        return "/paris/temp/";
+        return "/mapp/temp/";
     }
 
     // 파일이 저장될 이름 반환하기

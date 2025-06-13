@@ -18,11 +18,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .addResourceLocations("classpath:/static/", "classpath:/templates/");
 
         // 공지 이미지
-        registry.addResourceHandler("/paris/notice/**")
-                .addResourceLocations("file:/paris/notice/");
+        registry.addResourceHandler("/mapp/notice/**")
+                .addResourceLocations("file:/mapp/notice/");
 
         // 파일 업로드
-        registry.addResourceHandler("/paris/upload/**")
-                .addResourceLocations("file:/paris/upload/");
+        registry.addResourceHandler("/mapp/upload/**")
+                .addResourceLocations("file:/mapp/upload/");
     }
 }
