@@ -4,6 +4,8 @@ import com.pyj.mapp.dto.UserDto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.util.List;
+
 public interface UserService {
     //로그인 처리
     void login(HttpServletRequest request, HttpServletResponse response) throws Exception;
@@ -17,4 +19,7 @@ public interface UserService {
     void registerUser(UserDto userDto);
 
     UserDto findById(String id);
+
+    //회원 목록 가져오기
+    List<UserDto> getAllUsers();
 }

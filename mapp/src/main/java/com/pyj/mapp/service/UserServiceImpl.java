@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.PrintWriter;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -84,6 +85,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto getUser(String id) {
         return userMapper.getUser(Map.of("id", id));
+    }
+
+    @Override
+    public List<UserDto> getAllUsers() {
+        return userMapper.findAll();
     }
 
 }

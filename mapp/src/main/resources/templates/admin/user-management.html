@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>회원 목록 - 관리자 페이지</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/assets/css/main.css}" />
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f9fafb;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 24px;
+            color: #111827;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 14px 16px;
+            text-align: center;
+            white-space: nowrap;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        thead {
+            background-color: #1f2937;
+        }
+
+        thead th {
+            color: white; !important;
+        }
+
+        tbody tr:hover {
+            background-color: #f3f4f6;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            font-size: 12px;
+            border-radius: 9999px;
+            font-weight: 600;
+        }
+
+        .badge-admin {
+            background-color: #2563eb;
+            color: white;
+        }
+
+        .badge-user {
+            background-color: #10b981;
+            color: white;
+        }
+
+        .actions a {
+            display: inline-block;
+            font-size: 13px;
+            padding: 6px 10px;
+            border-radius: 6px;
+            background-color: #e5e7eb;
+            text-decoration: none;
+            color: #374151;
+            transition: background-color 0.2s;
+        }
+
+        .actions a:hover {
+            background-color: #d1d5db;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>회원 목록</h2>
+    <div class="table-wrapper">
+        <table>
+            <thead>
+            <tr>
+                <th>회원번호</th>
+                <th>아이디</th>
+                <th>이름</th>
+                <th>성별</th>
+                <th>이메일</th>
+                <th>전화번호</th>
+                <th>추천인 코드</th>
+                <th>가입일</th>
+                <th>역할</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${userList}">
+                <td th:text="${user.userNo}"></td>
+                <td th:text="${user.id}"></td>
+                <td th:text="${user.name}"></td>
+                <td th:text="${user.gender}"></td>
+                <td th:text="${user.email}"></td>
+                <td th:text="${user.hp}"></td>
+                <td th:text="${user.referralCode}"></td>
+                <td th:text="${#dates.format(user.joinedAt, 'yyyy년 MM월 dd일 HH:mm')}"></td>
+                <td>
+                    <span th:text="${user.role}"
+                          th:classappend="${user.role == 'ADMIN'} ? 'badge badge-admin' : 'badge badge-user'">
+                        USER
+                    </span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>

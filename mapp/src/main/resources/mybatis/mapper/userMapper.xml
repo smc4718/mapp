@@ -29,6 +29,13 @@
         </where>
     </select>
 
+    <!-- 회원 목록 -->
+    <select id="findAll" resultType="UserDto">
+        SELECT *
+        FROM USER_T
+        ORDER BY USER_NO
+    </select>
+
     <!-- 회원 등록 -->
     <insert id="insertUser" parameterType="UserDto">
         INSERT INTO USER_T (

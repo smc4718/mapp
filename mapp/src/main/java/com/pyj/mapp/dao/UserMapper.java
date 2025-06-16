@@ -3,6 +3,7 @@ package com.pyj.mapp.dao;
 import com.pyj.mapp.dto.UserDto;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
 import java.util.Map;
 
 @Mapper
@@ -11,4 +12,5 @@ public interface UserMapper {
     void insertUser(UserDto user);
     UserDto findById(String id);
     UserDto findByReferralCode(String referralCode);
+    List<UserDto> findAll();
 }
