@@ -14,6 +14,7 @@
         <typeAlias alias="UserDto"            type="com.pyj.mapp.dto.UserDto"/>
         <typeAlias alias="NoticeDto"          type="com.pyj.mapp.dto.NoticeDto"/>
         <typeAlias alias="NoticeImageDto"     type="com.pyj.mapp.dto.NoticeImageDto"/>
+        <typeAlias alias="ReferralDto"        type="com.pyj.mapp.dto.ReferralDto"/>
     </typeAliases>
 
 </configuration>

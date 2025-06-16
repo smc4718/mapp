@@ -38,6 +38,9 @@
 
     <!-- 회원 등록 -->
     <insert id="insertUser" parameterType="UserDto">
+        <selectKey keyProperty="userNo" resultType="int" order="BEFORE">
+            SELECT USER_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
         INSERT INTO USER_T (
             USER_NO
           , ID

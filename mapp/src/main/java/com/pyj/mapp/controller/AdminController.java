@@ -31,14 +31,4 @@ public class AdminController {
         return "admin/user-management";
     }
 
-    // 관리자 페이지 - 추천인 조직도
-    @GetMapping("/referral-tree")
-    public String referralTree(HttpSession session) {
-        UserDto loginUser = (UserDto) session.getAttribute("user");
-        if (loginUser == null || !"ADMIN".equals(loginUser.getRole())) {
-            return "redirect:/main";
-        }
-
-        return "admin/referral-tree";
-    }
 }

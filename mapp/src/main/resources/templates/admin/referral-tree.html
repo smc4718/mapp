@@ -1,12 +1,264 @@
-<!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <title>추천인 조직도</title>
-    <link rel="stylesheet" th:href="@{/assets/css/main.css}">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" th:href="@{/assets/css/main.css}" />
+    <noscript><link rel="stylesheet" th:href="@{/assets/css/noscript.css}" /></noscript>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jstree@3.3.15/dist/themes/default/style.min.css" />
+    <title>MAPP</title>
+
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f9fafb;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 24px;
+            color: #111827;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 14px 16px;
+            text-align: center;
+            white-space: nowrap;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        thead {
+            background-color: #1f2937;
+        }
+
+        thead th {
+            color: white !important;
+        }
+
+        tbody tr:hover {
+            background-color: #f3f4f6;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            font-size: 12px;
+            border-radius: 9999px;
+            font-weight: 600;
+        }
+
+        .badge-admin {
+            background-color: #2563eb;
+            color: white;
+        }
+
+        .badge-user {
+            background-color: #10b981;
+            color: white;
+        }
+
+        .actions a {
+            display: inline-block;
+            font-size: 13px;
+            padding: 6px 10px;
+            border-radius: 6px;
+            background-color: #e5e7eb;
+            text-decoration: none;
+            color: #374151;
+            transition: background-color 0.2s;
+        }
+
+        .actions a:hover {
+            background-color: #d1d5db;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+            z-index: 999;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            bottom: 100%;
+            left: 0;
+            background-color: white;
+            min-width: 160px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            z-index: 9999;
+            padding: 0;
+        }
+
+        .dropdown-content li {
+            width: 100%;
+        }
+
+        .dropdown-content a {
+            color: black !important;
+            padding: 10px 16px;
+            text-decoration: none;
+            border: none;
+            display: block;
+            background-color: white;
+            white-space: nowrap;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+            color: orange !important;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        #wrapper, #nav {
+            overflow: visible;
+        }
+
+        ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        ul li a {
+            text-decoration: none;
+            border: none;
+            color: inherit;
+        }
+
+        ul li a:hover {
+            text-decoration: none;
+            border: none;
+        }
+
+        a:focus {
+            outline: none;
+        }
+    </style>
+
 </head>
-<body>
-<h2>추천인 조직도</h2>
-<p>여기에 조직도 시각화가 들어갈 예정</p>
+
+<body class="is-preload">
+
+<!-- Wrapper -->
+<div id="wrapper" class="fade-in">
+
+    <!-- Intro -->
+    <div id="intro">
+        <h1>MAPP</h1>
+        <p>to live is MAPP World</p>
+        <ul class="actions">
+            <li><a href="#header" class="button icon solid solo fa-arrow-down scrolly">Continue</a></li>
+        </ul>
+    </div>
+
+    <!-- Header -->
+    <header id="header">
+        <a th:href="@{/main}" class="logo">MAPP</a>
+    </header>
+
+    <!-- Nav -->
+    <nav id="nav">
+        <ul class="links">
+            <li><a th:href="@{/notice/list}">오늘의 공지</a></li>
+            <th:block th:if="${session.user.role == 'ADMIN'}">
+                <li class="active dropdown">
+                    <a href="#">관리자 대시보드</a>
+                    <ul class="dropdown-content">
+                        <li><a th:href="@{/admin/user-management}">회원 목록</a></li>
+                        <li><a th:href="@{/admin/referral-tree}">추천인 조직도</a></li>
+                    </ul>
+                </li>
+            </th:block>
+        </ul>
+
+        <span th:if="${session.user != null}">
+            <span th:text="${session.user.name} + '님'"></span>
+            <a th:href="@{/user/logout}">로그아웃</a>
+        </span>
+    </nav>
+
+    <!-- Main -->
+    <div id="main">
+        <div class="container">
+            <h2>추천인 조직도</h2>
+            <div id="referralTree"></div>
+        </div>
+    </div>
+
+    <!-- Copyright -->
+    <div id="copyright">
+        <ul>
+            <li>&copy; PYJ</li>
+            <li><a th:href="@{/main}">Park Youngjin</a></li>
+        </ul>
+    </div>
+
+</div>
+
+<!-- Scripts -->
+<script th:src="@{/assets/js/jquery.min.js}"></script>
+<script th:src="@{/assets/js/jquery.scrollex.min.js}"></script>
+<script th:src="@{/assets/js/jquery.scrolly.min.js}"></script>
+<script th:src="@{/assets/js/browser.min.js}"></script>
+<script th:src="@{/assets/js/breakpoints.min.js}"></script>
+<script th:src="@{/assets/js/util.js}"></script>
+<script th:src="@{/assets/js/main.js}"></script>
+<script th:src="@{https://cdn.jsdelivr.net/npm/jstree@3.3.15/dist/jstree.min.js}"></script>
+
+<script th:inline="javascript">
+    const rootReferrerNo = [[${rootReferrerNo}]];
+
+    const buildTree = (parentId, callback) => {
+        $.get(`/admin/referral-tree/children?referrerNo=${parentId}`, function (children) {
+            const nodes = children.map(child => ({
+                id: child.userNo,
+                parent: parentId === rootReferrerNo ? "#" : parentId,
+                text: `${child.name} (${child.role})`
+            }));
+            callback(nodes);
+        });
+    };
+
+    $(function () {
+        $('#referralTree').jstree({
+            core: {
+                data: function (obj, cb) {
+                    const parentId = obj.id === '#' ? rootReferrerNo : obj.id;
+                    buildTree(parentId, cb);
+                },
+                themes: {
+                    stripes: true
+                }
+            },
+            plugins: ["wholerow"]
+        });
+    });
+</script>
+
 </body>
 </html>

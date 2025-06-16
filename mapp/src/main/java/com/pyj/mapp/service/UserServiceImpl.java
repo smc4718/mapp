@@ -1,5 +1,6 @@
 package com.pyj.mapp.service;
 
+import com.pyj.mapp.dao.ReferralMapper;
 import com.pyj.mapp.dao.UserMapper;
 import com.pyj.mapp.dto.UserDto;
 import com.pyj.mapp.util.PbSecurityUtils;
@@ -20,13 +21,15 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
 
     private final UserMapper userMapper;
+    private final ReferralMapper referralMapper;
     private final PbSecurityUtils pbSecurityUtils;
 
     @Override
     public void registerUser(UserDto userDto) {
-        // 1. 추천인 코드 유효성 검증
+        // 1. 추천인 코드 유효성 검증 및 referrer 조회
+        UserDto referrer = null;
         if (userDto.getReferredByCode() != null && !userDto.getReferredByCode().isBlank()) {
-            UserDto referrer = userMapper.findByReferralCode(userDto.getReferredByCode());
+            referrer = userMapper.findByReferralCode(userDto.getReferredByCode());
             if (referrer == null) {
                 throw new IllegalArgumentException("유효하지 않은 추천인 코드입니다.");
             }
@@ -40,11 +43,19 @@ public class UserServiceImpl implements UserService {
         String encryptedPw = pbSecurityUtils.getSHA256(userDto.getPw());
         userDto.setPw(encryptedPw);
 
-        // 4. 기본 역할 부여 (USER)
+        // 4. 기본 권한 부여 (USER)
         userDto.setRole("USER");
 
-        // 5. DB에 저장
-        userMapper.insertUser(userDto);
+        // 5. 유저 저장
+        userMapper.insertUser(userDto);  // userDto.userNo가 자동 생성되었다고 가정
+
+        // 6. 추천 관계 저장
+        if (referrer != null) {
+            referralMapper.insertReferral(Map.of(
+                    "referrerNo", referrer.getUserNo(),
+                    "referredNo", userDto.getUserNo()
+            ));
+        }
     }
 
     @Override
