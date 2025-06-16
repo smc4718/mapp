@@ -13,6 +13,73 @@
  		margin-left: 850px;
 	}
 
+	.dropdown {
+		position: relative;
+		display: inline-block;
+		z-index: 999;
+	}
+
+	.dropdown-content {
+		display: none;
+		position: absolute;
+		bottom: 100%;
+		left: 0;
+		background-color: white;
+		min-width: 160px;
+		box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+		z-index: 9999;
+		padding: 0;
+	}
+
+	.dropdown-content li {
+		width: 100%;
+	}
+
+	.dropdown-content a {
+		color: black !important;
+		padding: 10px 16px;
+		text-decoration: none;
+		border: none;
+		display: block;
+		background-color: white;
+		white-space: nowrap;
+	}
+
+	.dropdown-content a:hover {
+		background-color: #f1f1f1;
+		color: orange !important;
+	}
+
+	.dropdown:hover .dropdown-content {
+		display: block;
+	}
+
+	/* 깨짐 방지 */
+	#wrapper, #nav {
+		overflow: visible;
+	}
+
+	/* 점 제거 + 밑줄 제거 */
+	ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	ul li a {
+		text-decoration: none;
+		border: none;
+		color: inherit;
+	}
+
+	ul li a:hover {
+		text-decoration: none;
+		border: none;
+	}
+
+	a:focus {
+		outline: none;
+	}
 </style>
 
 <body class="is-preload">
@@ -38,12 +105,24 @@
 	<nav id="nav">
 		<ul class="links">
 			<li class="active"><a th:href="@{/notice/list}">오늘의 공지</a></li>
-			<!-- 기본예시 = <li><a th:href="@{/event/list}">예상 게시판네임</a></li> -->
+
+			<!-- 관리자 드롭다운 메뉴 -->
+			<th:block th:if="${session.user.role == 'ADMIN'}">
+				<li class="dropdown">
+					<a href="#">관리자 대시보드</a>
+					<ul class="dropdown-content">
+						<li><a th:href="@{/admin/user-management}">회원 목록</a></li>
+						<li><a th:href="@{/admin/referral-tree}">추천인 조직도</a></li>
+					</ul>
+				</li>
+			</th:block>
 		</ul>
+
+		<!-- 로그인 상태 표시 -->
 		<span th:if="${session.user != null}">
-			<span th:text="${session.user.name} + '님'"></span>
-			<a th:href="@{/user/logout}">로그아웃</a>
-		</span>
+		<span th:text="${session.user.name} + '님'"></span>
+		<a th:href="@{/user/logout}">로그아웃</a>
+	</span>
 	</nav>
 
 	<!-- Main -->
