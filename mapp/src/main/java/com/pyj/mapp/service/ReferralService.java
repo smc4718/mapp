@@ -1,12 +1,14 @@
 package com.pyj.mapp.service;
 
-import com.pyj.mapp.dto.ReferralDto;
 import com.pyj.mapp.dto.UserDto;
 
 import java.util.List;
 
 public interface ReferralService {
 
-    //추천인 번호로 추천받은 사용자 목록 조회
-    List<UserDto> getReferredUsersByReferrerNo(int referrerNo);
+    // 전체 추천 관계 목록
+    List<UserDto> getAllReferralUsers();
+
+    // 추천인 조직도 + 세대 정보 포함
+    List<UserDto> getReferralTreeWithGenerations();
 }

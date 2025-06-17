@@ -6,15 +6,16 @@
 <mapper namespace="com.pyj.mapp.dao.UserMapper">
 
     <resultMap id="UserMap" type="UserDto">
-        <id     column="USER_NO"        property="userNo" />
-        <result column="ID"             property="id" />
-        <result column="PW"             property="pw" />
-        <result column="NAME"           property="name" />
-        <result column="GENDER"         property="gender" />
-        <result column="EMAIL"          property="email" />
-        <result column="HP"             property="hp" />
-        <result column="REFERRAL_CODE"  property="referralCode" />
-        <result column="JOINED_AT"      property="joinedAt" />
+        <id     column="USER_NO"             property="userNo" />
+        <result column="ID"                  property="id" />
+        <result column="PW"                  property="pw" />
+        <result column="NAME"                property="name" />
+        <result column="GENDER"              property="gender" />
+        <result column="EMAIL"               property="email" />
+        <result column="HP"                  property="hp" />
+        <result column="REFERRAL_CODE"       property="referralCode" />
+        <result column="JOINED_AT"           property="joinedAt" />
+        <result column="REFERRED_BY_USER_NO" property="referredByUserNo"/>
     </resultMap>
 
 
@@ -53,7 +54,7 @@
           , ROLE
           , JOINED_AT
         ) VALUES (
-            USER_SEQ.NEXTVAL
+            #{userNo}
           , #{id}
           , #{pw}
           , #{name}

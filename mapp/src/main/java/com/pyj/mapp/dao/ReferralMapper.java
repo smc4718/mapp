@@ -8,8 +8,7 @@ import java.util.Map;
 
 public interface ReferralMapper {
     void insertReferral(Map<String, Object> param);
-    List<ReferralDto> selectByReferrer(int referrerNo);
 
-    // 추천인 기준으로 추천받은 회원 목록 조회 (추천인 조직도용)
-    List<UserDto> getReferredUsersByReferrerNo(int referrerNo);
+    // 전체 추천 관계 기반으로 모든 유저 목록 조회 (트리용)
+    List<UserDto> getAllReferralUsers();
 }

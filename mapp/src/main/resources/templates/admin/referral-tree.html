@@ -230,33 +230,32 @@
 <script th:src="@{/assets/js/main.js}"></script>
 <script th:src="@{https://cdn.jsdelivr.net/npm/jstree@3.3.15/dist/jstree.min.js}"></script>
 
-<script th:inline="javascript">
-    const rootReferrerNo = [[${rootReferrerNo}]];
-
-    const buildTree = (parentId, callback) => {
-        $.get(`/admin/referral-tree/children?referrerNo=${parentId}`, function (children) {
-            const nodes = children.map(child => ({
-                id: child.userNo,
-                parent: parentId === rootReferrerNo ? "#" : parentId,
-                text: `${child.name} (${child.role})`
-            }));
-            callback(nodes);
-        });
-    };
-
+<script>
     $(function () {
-        $('#referralTree').jstree({
-            core: {
-                data: function (obj, cb) {
-                    const parentId = obj.id === '#' ? rootReferrerNo : obj.id;
-                    buildTree(parentId, cb);
-                },
-                themes: {
-                    stripes: true
+        $.get("/admin/referral-tree/data", function (users) {
+            const nodes = users.map(user => ({
+                id: user.userNo,
+                parent: user.referredByUserNo == null ? "#" : user.referredByUserNo,
+                text: `${user.name} (${user.role})`,
+                icon: false,
+                a_attr: {
+                    style: `color: ${getColorByGeneration(user.generation)}; font-weight: bold;`
                 }
-            },
-            plugins: ["wholerow"]
+            }));
+
+            $('#referralTree').jstree({
+                core: {
+                    data: nodes,
+                    themes: { stripes: true }
+                },
+                plugins: ["wholerow"]
+            });
         });
+
+        function getColorByGeneration(gen) {
+            const colors = ['#000', '#1d4ed8', '#10b981', '#f59e0b', '#ef4444'];
+            return colors[(gen - 1) % colors.length] || '#6b7280'; // fallback
+        }
     });
 </script>
 

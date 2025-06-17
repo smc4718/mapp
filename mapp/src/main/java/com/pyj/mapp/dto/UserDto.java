@@ -23,4 +23,7 @@ public class UserDto {
     private String referredByCode;      // 추천인이 입력한 추천 코드
     private String role;                // 역할 (USER, ADMIN)
     private Date joinedAt;              // 가입일
+    private Integer referredByUserNo; // 내가 누구에게 추천받았는지, DB에 없는 컬럼, but 쿼리로 조인해서 넣어줌
+    private int generation;           // 몇 대인지 (1대, 2대…)
+
 }

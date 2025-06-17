@@ -6,15 +6,16 @@
 <mapper namespace="com.pyj.mapp.dao.ReferralMapper">
 
     <resultMap id="UserMap" type="UserDto">
-        <id     column="USER_NO"        property="userNo" />
-        <result column="ID"             property="id" />
-        <result column="PW"             property="pw" />
-        <result column="NAME"           property="name" />
-        <result column="GENDER"         property="gender" />
-        <result column="EMAIL"          property="email" />
-        <result column="HP"             property="hp" />
-        <result column="REFERRAL_CODE"  property="referralCode" />
-        <result column="JOINED_AT"      property="joinedAt" />
+        <id     column="USER_NO"             property="userNo" />
+        <result column="ID"                  property="id" />
+        <result column="PW"                  property="pw" />
+        <result column="NAME"                property="name" />
+        <result column="GENDER"              property="gender" />
+        <result column="EMAIL"               property="email" />
+        <result column="HP"                  property="hp" />
+        <result column="REFERRAL_CODE"       property="referralCode" />
+        <result column="JOINED_AT"           property="joinedAt" />
+        <result column="REFERRED_BY_USER_NO" property="referredByUserNo"/>
     </resultMap>
 
     <!-- 추천 관계 입력 -->
@@ -32,21 +33,14 @@
         )
     </insert>
 
-    <!-- 추천인 기준으로 추천받은 회원 목록 조회 -->
-    <select id="getReferredUsersByReferrerNo" parameterType="int" resultMap="UserMap">
-        SELECT U.USER_NO, U.ID, U.PW, U.NAME, U.GENDER, U.EMAIL, U.HP, U.REFERRAL_CODE, U.ROLE, U.JOINED_AT
-          FROM REFERRAL_T R JOIN USER_T U
-               ON R.REFERRED_NO = U.USER_NO
-         WHERE R.REFERRER_NO = #{referrerNo}
-         ORDER BY U.JOINED_AT
+    <!-- 전체 추천 관계 목록 -->
+    <select id="getAllReferralUsers" resultMap="UserMap">
+        SELECT U.USER_NO, U.ID, U.PW, U.NAME, U.GENDER, U.EMAIL, U.HP, U.REFERRAL_CODE, U.ROLE, U.JOINED_AT, R.REFERRER_NO AS REFERRED_BY_USER_NO
+          FROM USER_T U LEFT JOIN REFERRAL_T R
+               ON U.USER_NO = R.REFERRED_NO
     </select>
 
-    <!-- 추천받은 사람 기준으로 추천인 조회 -->
-    <select id="selectByReferrer" parameterType="int" resultMap="UserMap">
-        SELECT U.USER_NO, U.ID, U.PW, U.NAME, U.GENDER, U.EMAIL, U.HP, U.REFERRAL_CODE, U.ROLE, U.JOINED_AT
-          FROM REFERRAL_T R JOIN USER_T U
-               ON R.REFERRER_NO = U.USER_NO
-         WHERE R.REFERRED_NO = #{referredNo}
-    </select>
+
+
 
 </mapper>
