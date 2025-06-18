@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pyj.mapp.dao.CompensationMapper">
+
+    <insert id="insertAll">
+        INSERT ALL
+        <foreach collection="compensations" item="c" separator="">
+            INTO COMPENSATION_T (
+              COMP_NO
+            , RECEIVER_USER_NO
+            , ORDER_NO
+            , GENERATION
+            , RATE
+            , AMOUNT
+            , PAID_AT
+            ) VALUES (
+              COMPENSATION_SEQ.NEXTVAL
+            , #{c.receiverUserNo}
+            , #{c.orderNo}
+            , #{c.generation}
+            , #{c.rate}
+            , #{c.amount}
+            , #{c.paidAt}
+            )
+        </foreach>
+        SELECT *
+          FROM DUAL
+    </insert>
+
+    <select id="findByReceiverUserNo" resultType="CompensationDto" parameterType="int">
+        SELECT *
+          FROM COMPENSATION_T
+         WHERE RECEIVER_USER_NO = #{userNo}
+         ORDER BY PAID_AT DESC
+    </select>
+
+</mapper>

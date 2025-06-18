@@ -2,6 +2,7 @@ package com.pyj.mapp.dao;
 
 import com.pyj.mapp.dto.ReferralDto;
 import com.pyj.mapp.dto.UserDto;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -17,4 +18,5 @@ public interface ReferralMapper {
     String getUserGrade(int userNo);
     void updateUserGrade(Map<String, Object> param);
 
+    List<UserDto> getUplinesByGeneration(@Param("userNo") int userNo);
 }

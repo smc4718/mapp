@@ -88,4 +88,10 @@
          WHERE REFERRAL_CODE = #{referralCode}
     </select>
 
+    <update id="addMappPoint">
+        UPDATE USER_T
+           SET MAPP_POINT = NVL(MAPP_POINT, 0) + #{amount}
+         WHERE USER_NO = #{userNo}
+    </update>
+
 </mapper>

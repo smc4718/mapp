@@ -15,6 +15,9 @@
         <typeAlias alias="NoticeDto"          type="com.pyj.mapp.dto.NoticeDto"/>
         <typeAlias alias="NoticeImageDto"     type="com.pyj.mapp.dto.NoticeImageDto"/>
         <typeAlias alias="ReferralDto"        type="com.pyj.mapp.dto.ReferralDto"/>
+        <typeAlias alias="OrderDto"           type="com.pyj.mapp.dto.OrderDto"/>
+        <typeAlias alias="CompensationDto"    type="com.pyj.mapp.dto.CompensationDto"/>
+        <typeAlias alias="PointDto"           type="com.pyj.mapp.dto.PointDto"/>
     </typeAliases>
 
 </configuration>

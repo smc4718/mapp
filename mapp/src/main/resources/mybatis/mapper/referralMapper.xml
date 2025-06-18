@@ -70,4 +70,13 @@
          WHERE USER_NO = #{userNo}
     </update>
 
+    <select id="getUplinesByGeneration" parameterType="int" resultType="UserDto">
+         SELECT U.USER_NO, U.GRADE, R.REFERRER_NO, LEVEL AS generation
+           FROM REFERRAL_T R JOIN USER_T U
+                ON U.USER_NO = R.REFERRER_NO
+          START WITH R.REFERRED_NO = #{userNo}
+        CONNECT BY PRIOR R.REFERRER_NO = R.REFERRED_NO
+                AND LEVEL &lt;= 7
+    </select>
+
 </mapper>
