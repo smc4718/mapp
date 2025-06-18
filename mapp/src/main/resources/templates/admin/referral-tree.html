@@ -25,13 +25,6 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
-        h2 {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 24px;
-            color: #111827;
-        }
-
         .table-wrapper {
             overflow-x: auto;
         }
@@ -158,6 +151,76 @@
         a:focus {
             outline: none;
         }
+
+        /* ✅ 조직도 제목 + 버튼 정렬용 */
+        .header-row {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .header-title-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .header-title-group h2 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        /* ✅ 등급 갱신 버튼 스타일 */
+        .grade-refresh-btn {
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            padding: 2px 8px;
+            font-size: 10.5px;
+            border-radius: 4px;
+            cursor: pointer;
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: background-color 0.2s ease;
+            height: 24px;
+        }
+
+        .grade-refresh-btn:hover {
+            background-color: #2563eb;
+        }
+
+        .grade-refresh-btn:disabled {
+            background-color: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        /* ✅ 로딩 스피너 */
+        .spinner {
+            border: 1.5px solid #f3f3f3;
+            border-top: 1.5px solid white;
+            border-radius: 50%;
+            width: 10px;
+            height: 10px;
+            animation: spin 1s linear infinite;
+            display: none;
+        }
+
+        .grade-refresh-btn.loading .spinner {
+            display: inline-block;
+        }
+
+        .grade-refresh-btn.loading .btn-text {
+            opacity: 0.6;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 
 </head>
@@ -205,10 +268,15 @@
     <!-- Main -->
     <div id="main">
         <div class="container">
-            <h2>추천인 조직도</h2>
-                <button id="refreshGrades" style="margin-bottom: 10px; padding: 6px 12px;">
-                    등급 갱신
-                </button>
+            <div class="header-row">
+                <div class="header-title-group">
+                    <h2>추천인 조직도</h2>
+                    <button id="refreshGrades" class="grade-refresh-btn">
+                        <span class="spinner"></span>
+                        <span class="btn-text">등급 갱신</span>
+                    </button>
+                </div>
+            </div>
             <div id="referralTree"></div>
         </div>
     </div>
@@ -238,14 +306,21 @@
 
         // 전체 등급 수동 갱신 버튼 클릭 시
         $('#refreshGrades').click(function () {
-            if (confirm("모든 회원의 등급을 재계산하시겠습니까?")) {
-                $.post("/admin/referral-tree/refresh-grades", function (res) {
-                    alert(res);
-                    loadReferralTree(); // location.reload() 대신 트리만 다시 그리기
-                }).fail(function () {
-                    alert("등급 갱신 중 오류가 발생했습니다.");
-                });
-            }
+            if (!confirm("모든 회원의 등급을 재계산하시겠습니까?")) return;
+
+            const $btn = $(this);
+            $btn.addClass("loading");
+            $btn.prop("disabled", true);
+
+            $.post("/admin/referral-tree/refresh-grades", function (res) {
+                alert(res);
+                location.reload();
+            }).fail(function () {
+                alert("등급 갱신 중 오류가 발생했습니다.");
+            }).always(function () {
+                $btn.removeClass("loading");
+                $btn.prop("disabled", false);
+            });
         });
 
         // 트리 데이터 불러오기 함수
