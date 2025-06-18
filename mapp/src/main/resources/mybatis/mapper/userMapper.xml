@@ -16,6 +16,8 @@
         <result column="REFERRAL_CODE"       property="referralCode" />
         <result column="JOINED_AT"           property="joinedAt" />
         <result column="REFERRED_BY_USER_NO" property="referredByUserNo"/>
+        <result column="GRADE"               property="grade"/>
+        <result column="MAPP_POINT"          property="mappPoint"/>
     </resultMap>
 
 
@@ -52,6 +54,8 @@
           , HP
           , REFERRAL_CODE
           , ROLE
+          , GRADE
+          , MAPP_POINT
           , JOINED_AT
         ) VALUES (
             #{userNo}
@@ -63,9 +67,12 @@
           , #{hp}
           , #{referralCode}
           , #{role}
+          , #{grade}
+          , #{mappPoint}
           , SYSDATE
         )
     </insert>
+
 
     <!-- ID로 회원 조회 -->
     <select id="findById" parameterType="String" resultType="UserDto">

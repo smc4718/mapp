@@ -23,6 +23,7 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final ReferralMapper referralMapper;
     private final PbSecurityUtils pbSecurityUtils;
+    private final ReferralService referralService;
 
     @Override
     public void registerUser(UserDto userDto) {
@@ -46,6 +47,10 @@ public class UserServiceImpl implements UserService {
         // 4. 기본 권한 부여 (USER)
         userDto.setRole("USER");
 
+        // 5. 기본 GRADE 및 MAPP_POINT 설정
+        userDto.setGrade("M1");
+        userDto.setMappPoint(0);
+
         // 5. 유저 저장
         userMapper.insertUser(userDto);  // userDto.userNo가 자동 생성되었다고 가정
 
@@ -56,6 +61,9 @@ public class UserServiceImpl implements UserService {
                     "referredNo", userDto.getUserNo()
             ));
         }
+
+        // 추천한 referrer의 등급 자동 업데이트
+        referralService.updateUserGrade(referrer.getUserNo());
     }
 
     @Override

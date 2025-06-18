@@ -206,6 +206,9 @@
     <div id="main">
         <div class="container">
             <h2>추천인 조직도</h2>
+                <button id="refreshGrades" style="margin-bottom: 10px; padding: 6px 12px;">
+                    등급 갱신
+                </button>
             <div id="referralTree"></div>
         </div>
     </div>
@@ -232,30 +235,62 @@
 
 <script>
     $(function () {
-        $.get("/admin/referral-tree/data", function (users) {
-            const nodes = users.map(user => ({
-                id: user.userNo,
-                parent: user.referredByUserNo == null ? "#" : user.referredByUserNo,
-                text: `${user.name} (${user.role})`,
-                icon: false,
-                a_attr: {
-                    style: `color: ${getColorByGeneration(user.generation)}; font-weight: bold;`
-                }
-            }));
 
-            $('#referralTree').jstree({
-                core: {
-                    data: nodes,
-                    themes: { stripes: true }
-                },
-                plugins: ["wholerow"]
-            });
+        // 전체 등급 수동 갱신 버튼 클릭 시
+        $('#refreshGrades').click(function () {
+            if (confirm("모든 회원의 등급을 재계산하시겠습니까?")) {
+                $.post("/admin/referral-tree/refresh-grades", function (res) {
+                    alert(res);
+                    loadReferralTree(); // location.reload() 대신 트리만 다시 그리기
+                }).fail(function () {
+                    alert("등급 갱신 중 오류가 발생했습니다.");
+                });
+            }
         });
 
-        function getColorByGeneration(gen) {
-            const colors = ['#000', '#1d4ed8', '#10b981', '#f59e0b', '#ef4444'];
-            return colors[(gen - 1) % colors.length] || '#6b7280'; // fallback
+        // 트리 데이터 불러오기 함수
+        function loadReferralTree() {
+            $.get("/admin/referral-tree/data?ts=" + new Date().getTime(), function (users) {
+
+                const nodes = users.map(user => ({
+                    id: user.userNo,
+                    parent: user.referredByUserNo == null ? "#" : user.referredByUserNo,
+                    text: `${user.name} (${user.grade})`,  // 이름 + 직급 표시
+                    icon: false,
+                    a_attr: {
+                        style: `color: ${getColorByGrade(user.grade)}; font-weight: bold;`
+                    }
+                }));
+
+                // 기존 트리 제거 후 새로 초기화
+                $('#referralTree').jstree("destroy").empty();
+                $('#referralTree').jstree({
+                    core: {
+                        data: nodes,
+                        themes: { stripes: true }
+                    },
+                    plugins: ["wholerow"]
+                });
+
+            });
         }
+
+        // 직급별 색상 지정
+        function getColorByGrade(grade) {
+            const colorMap = {
+                M1: "#6b7280", // gray
+                M2: "#3b82f6", // blue
+                M3: "#10b981", // green
+                M4: "#f59e0b", // amber
+                M5: "#ef4444", // red
+                M6: "#8b5cf6", // violet
+                M7: "#d97706"  // orange
+            };
+            return colorMap[grade] || "#374151"; // fallback
+        }
+
+        // 페이지 로드시 최초 1회 트리 불러오기
+        loadReferralTree();
     });
 </script>
 

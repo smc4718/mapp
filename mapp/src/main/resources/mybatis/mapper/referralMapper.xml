@@ -16,6 +16,8 @@
         <result column="REFERRAL_CODE"       property="referralCode" />
         <result column="JOINED_AT"           property="joinedAt" />
         <result column="REFERRED_BY_USER_NO" property="referredByUserNo"/>
+        <result column="GRADE"               property="grade"/>
+        <result column="MAPP_POINT"          property="mappPoint"/>
     </resultMap>
 
     <!-- 추천 관계 입력 -->
@@ -35,12 +37,37 @@
 
     <!-- 전체 추천 관계 목록 -->
     <select id="getAllReferralUsers" resultMap="UserMap">
-        SELECT U.USER_NO, U.ID, U.PW, U.NAME, U.GENDER, U.EMAIL, U.HP, U.REFERRAL_CODE, U.ROLE, U.JOINED_AT, R.REFERRER_NO AS REFERRED_BY_USER_NO
+        SELECT U.USER_NO, U.ID, U.PW, U.NAME, U.GENDER, U.EMAIL, U.HP, U.REFERRAL_CODE, U.ROLE, U.JOINED_AT, U.GRADE, U.MAPP_POINT, R.REFERRER_NO AS REFERRED_BY_USER_NO
           FROM USER_T U LEFT JOIN REFERRAL_T R
                ON U.USER_NO = R.REFERRED_NO
     </select>
 
+    <!-- 내가 추천한 회원 번호 목록 -->
+    <select id="getReferredUserNos" parameterType="int" resultType="int">
+        SELECT REFERRED_NO
+          FROM REFERRAL_T
+         WHERE REFERRER_NO = #{referrerNo}
+    </select>
 
+    <!-- 특정 회원이 추천한 사람 수 -->
+    <select id="countReferralsByUser" parameterType="int" resultType="int">
+        SELECT COUNT(*)
+          FROM REFERRAL_T
+         WHERE REFERRER_NO = #{referrerNo}
+    </select>
 
+    <!-- 회원 현재 등급 조회 -->
+    <select id="getUserGrade" parameterType="int" resultType="String">
+        SELECT GRADE
+          FROM USER_T
+         WHERE USER_NO = #{userNo}
+    </select>
+
+    <!-- 회원 등급 업데이트 -->
+    <update id="updateUserGrade" parameterType="map">
+        UPDATE USER_T
+           SET GRADE = #{grade}
+         WHERE USER_NO = #{userNo}
+    </update>
 
 </mapper>
