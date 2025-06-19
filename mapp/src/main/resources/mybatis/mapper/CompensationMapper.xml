@@ -5,30 +5,26 @@
 
 <mapper namespace="com.pyj.mapp.dao.CompensationMapper">
 
-    <insert id="insertAll">
-        INSERT ALL
-        <foreach collection="compensations" item="c" separator="">
-            INTO COMPENSATION_T (
-              COMP_NO
-            , RECEIVER_USER_NO
-            , ORDER_NO
-            , GENERATION
-            , RATE
-            , AMOUNT
-            , PAID_AT
-            ) VALUES (
-              COMPENSATION_SEQ.NEXTVAL
-            , #{c.receiverUserNo}
-            , #{c.orderNo}
-            , #{c.generation}
-            , #{c.rate}
-            , #{c.amount}
-            , #{c.paidAt}
-            )
-        </foreach>
-        SELECT *
-          FROM DUAL
+    <insert id="insertOne" parameterType="CompensationDto">
+        INSERT INTO COMPENSATION_T (
+            COMPENSATION_NO
+          , RECEIVER_USER_NO
+          , ORDER_NO
+          , GENERATION
+          , RATE
+          , AMOUNT
+          , PAID_AT
+        ) VALUES (
+            COMPENSATION_SEQ.NEXTVAL
+          , #{receiverUserNo}
+          , #{orderNo}
+          , #{generation}
+          , #{rate}
+          , #{amount}
+          , #{paidAt}
+        )
     </insert>
+
 
     <select id="findByReceiverUserNo" resultType="CompensationDto" parameterType="int">
         SELECT *

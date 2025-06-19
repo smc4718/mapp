@@ -8,6 +8,6 @@ import java.util.List;
 
 @Mapper
 public interface CompensationMapper {
-    void insertAll(@Param("compensations") List<CompensationDto> compensations);
+    void insertOne(CompensationDto compensation);
     List<CompensationDto> findByReceiverUserNo(@Param("userNo") int userNo);
 }

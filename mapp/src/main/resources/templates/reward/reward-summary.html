@@ -117,7 +117,8 @@
     <!-- Nav -->
     <nav id="nav">
         <ul class="links">
-            <li class="active"><a th:href="@{/notice/list}">오늘의 공지</a></li>
+            <li><a th:href="@{/notice/list}">오늘의 공지</a></li>
+            <li><a th:href="@{/order/product}">MAPP스토어</a></li>
 
             <!-- 관리자 드롭다운 메뉴 -->
             <th:block th:if="${session.user.role == 'ADMIN'}">
@@ -180,10 +181,10 @@
             </thead>
             <tbody>
             <tr th:each="p : ${points}">
-                <td th:text="${p.orderNo}">123</td>
-                <td th:text="${p.pointAmount}">5000</td>
-                <td th:text="${p.description}">1세대 추천 수당</td>
-                <td th:text="${#dates.format(p.createdAt, 'yyyy-MM-dd HH:mm')}">2025-06-19</td>
+                <td th:text="${p.orderNo}"></td>
+                <td th:text="${p.amount}"></td>
+                <td th:text="${p.reason}"></td>
+                <td th:text="${#dates.format(p.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
             </tr>
             </tbody>
         </table>

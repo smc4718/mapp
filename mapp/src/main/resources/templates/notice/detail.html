@@ -111,7 +111,8 @@
     <!-- Nav -->
     <nav id="nav">
         <ul class="links">
-            <li class="active"><a th:href="@{/notice/list}">오늘의 공지</a></li>
+            <li><a th:href="@{/notice/list}">오늘의 공지</a></li>
+            <li><a th:href="@{/order/product}">MAPP스토어</a></li>
 
             <!-- 관리자 드롭다운 메뉴 -->
             <th:block th:if="${session.user.role == 'ADMIN'}">

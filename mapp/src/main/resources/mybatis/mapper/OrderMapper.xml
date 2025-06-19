@@ -11,4 +11,31 @@
          WHERE ORDER_NO = #{orderNo}
     </select>
 
+    <insert id="insertOrder" parameterType="OrderDto">
+        <selectKey keyProperty="orderNo" resultType="long" order="BEFORE">
+            SELECT ORDER_SEQ.NEXTVAL
+              FROM DUAL
+        </selectKey>
+        INSERT INTO ORDER_T (
+            ORDER_NO
+          , BUYER_USER_NO
+          , AMOUNT
+          , ORDER_DATE
+          , USED_COUPON_YN
+        ) VALUES (
+            #{orderNo}
+          , #{buyerUserNo}
+          , #{amount}
+          , SYSDATE
+          , 'N'
+        )
+    </insert>
+
+    <select id="findPointsByUserNo" resultType="PointDto">
+        SELECT POINT_NO, USER_NO, ORDER_NO, AMOUNT, REASON, CREATED_AT
+          FROM POINT_T
+         WHERE USER_NO = #{userNo}
+         ORDER BY CREATED_AT DESC
+    </select>
+
 </mapper>

@@ -67,7 +67,9 @@ public class CompensationServiceImpl implements CompensationService {
 
         // 일괄 insert
         if (!compensations.isEmpty()) {
-            compensationMapper.insertAll(compensations);
+            for (CompensationDto c : compensations) {
+                compensationMapper.insertOne(c);
+            }
         }
     }
 

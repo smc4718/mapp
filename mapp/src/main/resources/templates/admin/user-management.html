@@ -186,11 +186,12 @@
     <nav id="nav">
         <ul class="links">
             <li><a th:href="@{/notice/list}">오늘의 공지</a></li>
+            <li><a th:href="@{/order/product}">MAPP스토어</a></li>
 
             <!-- 관리자 드롭다운 메뉴 -->
             <th:block th:if="${session.user.role == 'ADMIN'}">
-                <li class="active dropdown">
-                <a href="#">관리자 대시보드</a>
+                <li class="dropdown">
+                    <a href="#">관리자 대시보드</a>
                     <ul class="dropdown-content">
                         <li><a th:href="@{/admin/user-management}">회원 목록</a></li>
                         <li><a th:href="@{/admin/referral-tree}">추천인 조직도</a></li>

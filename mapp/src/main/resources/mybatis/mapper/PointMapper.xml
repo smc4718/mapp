@@ -24,9 +24,9 @@
     </insert>
 
     <select id="findByUserNo" resultType="PointDto">
-        SELECT POINT_NO, USER_NO, AMOUNT, REASON, CREATED_AT
-          FROM POINT_T
-         WHERE USER_NO = #{userNo}
-         ORDER BY CREATED_AT DESC
+        SELECT P.POINT_NO, P.USER_NO, P.ORDER_NO, P.AMOUNT, P.REASON, P.CREATED_AT
+          FROM POINT_T P
+         WHERE P.USER_NO = #{userNo}
+         ORDER BY P.CREATED_AT DESC
     </select>
 </mapper>
