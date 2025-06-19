@@ -1,66 +1,213 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <title>보상 통합 내역</title>
-    <style>
-        h2 { margin-top: 30px; }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
-        th, td {
-            padding: 10px;
-            border: 1px solid #ccc;
-            text-align: center;
-        }
-        thead {
-            background-color: #f5f5f5;
-        }
-    </style>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" th:href="@{/assets/css/main.css}" />
+    <noscript><link rel="stylesheet" th:href="@{/assets/css/noscript.css}" /></noscript>
+    <title>MAPP</title>
 </head>
-<body>
-<h2>💰 수당 내역</h2>
-<table>
-    <thead>
-    <tr>
-        <th>주문번호</th>
-        <th>세대</th>
-        <th>비율</th>
-        <th>금액</th>
-        <th>지급일</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="c : ${compensations}">
-        <td th:text="${c.orderNo}">123</td>
-        <td th:text="${c.generation}">1</td>
-        <td th:text="${c.rate}">0.05</td>
-        <td th:text="${c.amount}">5000</td>
-        <td th:text="${#dates.format(c.paidAt, 'yyyy-MM-dd HH:mm')}">2025-06-19</td>
-    </tr>
-    </tbody>
-</table>
 
-<h2>📌 포인트 내역</h2>
-<table>
-    <thead>
-    <tr>
-        <th>주문번호</th>
-        <th>포인트</th>
-        <th>설명</th>
-        <th>적립일</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="p : ${points}">
-        <td th:text="${p.orderNo}">123</td>
-        <td th:text="${p.pointAmount}">5000</td>
-        <td th:text="${p.description}">1세대 추천 수당</td>
-        <td th:text="${#dates.format(p.createdAt, 'yyyy-MM-dd HH:mm')}">2025-06-19</td>
-    </tr>
-    </tbody>
-</table>
+<style>
+    .button-location {
+        margin-left: 850px;
+    }
+
+    .dropdown {
+        position: relative;
+        display: inline-block;
+        z-index: 999;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        bottom: 100%;
+        left: 0;
+        background-color: white;
+        min-width: 160px;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        z-index: 9999;
+        padding: 0;
+    }
+
+    .dropdown-content li {
+        width: 100%;
+    }
+
+    .dropdown-content a {
+        color: black !important;
+        padding: 10px 16px;
+        text-decoration: none;
+        border: none;
+        display: block;
+        background-color: white;
+        white-space: nowrap;
+    }
+
+    .dropdown-content a:hover {
+        background-color: #f1f1f1;
+        color: orange !important;
+    }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    #wrapper, #nav {
+        overflow: visible;
+    }
+
+    ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    ul li a {
+        text-decoration: none;
+        border: none;
+        color: inherit;
+    }
+
+    ul li a:hover {
+        text-decoration: none;
+        border: none;
+    }
+
+    a:focus {
+        outline: none;
+    }
+
+    h2 { margin-top: 30px; }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+    th, td {
+        padding: 10px;
+        border: 1px solid #ccc;
+        text-align: center;
+    }
+    thead {
+        background-color: #f5f5f5;
+    }
+</style>
+
+<body class="is-preload">
+
+<!-- Wrapper -->
+<div id="wrapper" class="fade-in">
+
+    <!-- Intro -->
+    <div id="intro">
+        <h1>MAPP</h1>
+        <p>to live is MAPP World</p>
+        <ul class="actions">
+            <li><a href="#header" class="button icon solid solo fa-arrow-down scrolly">Continue</a></li>
+        </ul>
+    </div>
+
+    <!-- Header -->
+    <header id="header">
+        <a th:href="@{/main}" class="logo">MAPP</a>
+    </header>
+
+    <!-- Nav -->
+    <nav id="nav">
+        <ul class="links">
+            <li class="active"><a th:href="@{/notice/list}">오늘의 공지</a></li>
+
+            <!-- 관리자 드롭다운 메뉴 -->
+            <th:block th:if="${session.user.role == 'ADMIN'}">
+                <li class="dropdown">
+                    <a href="#">관리자 대시보드</a>
+                    <ul class="dropdown-content">
+                        <li><a th:href="@{/admin/user-management}">회원 목록</a></li>
+                        <li><a th:href="@{/admin/referral-tree}">추천인 조직도</a></li>
+                    </ul>
+                </li>
+            </th:block>
+        </ul>
+
+        <!-- 로그인 상태 표시 -->
+        <span th:if="${session.user != null}" style="display: flex; align-items: center; gap: 10px;">
+			<a th:href="@{/rewards}" style="text-decoration: none;">
+				<i class="fas fa-coins" style="color: orange;"></i>
+				<span style="font-size: 14px;">리워드 내역</span>
+			</a>
+			<div style="width:1px; height:16px; background-color:#ccc;"></div>
+				<span th:text="${session.user.name} + '님'"></span>
+			<a th:href="@{/user/logout}">로그아웃</a>
+		</span>
+    </nav>
+
+    <!-- Main -->
+    <div id="main">
+
+        <h2>💰 수당 내역</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>주문번호</th>
+                <th>세대</th>
+                <th>비율</th>
+                <th>금액</th>
+                <th>지급일</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="c : ${compensations}">
+                <td th:text="${c.orderNo}">123</td>
+                <td th:text="${c.generation}">1</td>
+                <td th:text="${c.rate}">0.05</td>
+                <td th:text="${c.amount}">5000</td>
+                <td th:text="${#dates.format(c.paidAt, 'yyyy-MM-dd HH:mm')}">2025-06-19</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <h2>📌 포인트 내역</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>주문번호</th>
+                <th>포인트</th>
+                <th>설명</th>
+                <th>적립일</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="p : ${points}">
+                <td th:text="${p.orderNo}">123</td>
+                <td th:text="${p.pointAmount}">5000</td>
+                <td th:text="${p.description}">1세대 추천 수당</td>
+                <td th:text="${#dates.format(p.createdAt, 'yyyy-MM-dd HH:mm')}">2025-06-19</td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+    <!-- Copyright -->
+    <div id="copyright">
+        <ul>
+            <li>&copy; PYJ</li>
+            <li><a th:href="@{/main}">Park Youngjin</a></li>
+        </ul>
+    </div>
+
+</div>
+
+<!-- Scripts -->
+<script th:src="@{/assets/js/jquery.min.js}"></script>
+<script th:src="@{/assets/js/jquery.scrollex.min.js}"></script>
+<script th:src="@{/assets/js/jquery.scrolly.min.js}"></script>
+<script th:src="@{/assets/js/browser.min.js}"></script>
+<script th:src="@{/assets/js/breakpoints.min.js}"></script>
+<script th:src="@{/assets/js/util.js}"></script>
+<script th:src="@{/assets/js/main.js}"></script>
+
 </body>
 </html>

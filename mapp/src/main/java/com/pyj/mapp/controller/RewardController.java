@@ -22,7 +22,7 @@ class RewardController {
     }
 
     @GetMapping
-    public String viewAllRewards(@SessionAttribute("loginUser") UserDto user, Model model) {
+    public String viewAllRewards(@SessionAttribute("user") UserDto user, Model model) {
         model.addAttribute("compensations", compensationMapper.findByReceiverUserNo(user.getUserNo()));
         model.addAttribute("points", pointMapper.findByUserNo(user.getUserNo()));
         return "reward/reward-summary";

@@ -10,17 +10,23 @@
             POINT_NO
           , USER_NO
           , ORDER_NO
-          , POINT_AMOUNT
-          , DESCRIPTION
+          , AMOUNT
+          , REASON
           , CREATED_AT
         ) VALUES (
             POINT_SEQ.NEXTVAL
           , #{userNo}
           , #{orderNo}
           , #{amount}
-          , #{description}
+          , #{reason}
           , SYSDATE
         )
     </insert>
 
+    <select id="findByUserNo" resultType="PointDto">
+        SELECT POINT_NO, USER_NO, AMOUNT, REASON, CREATED_AT
+          FROM POINT_T
+         WHERE USER_NO = #{userNo}
+         ORDER BY CREATED_AT DESC
+    </select>
 </mapper>

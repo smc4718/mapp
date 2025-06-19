@@ -4,6 +4,8 @@
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 	<link rel="stylesheet" th:href="@{/assets/css/main.css}" />
+	<!-- FontAwesome -->
+	<link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css}" />
 	<noscript><link rel="stylesheet" th:href="@{/assets/css/noscript.css}" /></noscript>
 	<title>MAPP</title>
 </head>
@@ -54,12 +56,10 @@
 		display: block;
 	}
 
-	/* 깨짐 방지 */
 	#wrapper, #nav {
 		overflow: visible;
 	}
 
-	/* 점 제거 + 밑줄 제거 */
 	ul {
 		list-style: none;
 		margin: 0;
@@ -79,6 +79,19 @@
 
 	a:focus {
 		outline: none;
+	}
+
+	table tbody tr:hover {
+		background-color: #f9f9f9;
+	}
+
+	a {
+		text-decoration: none;
+	}
+
+	a:hover {
+		text-decoration: none;
+		color: orange;
 	}
 </style>
 
@@ -119,10 +132,16 @@
 		</ul>
 
 		<!-- 로그인 상태 표시 -->
-		<span th:if="${session.user != null}">
-		<span th:text="${session.user.name} + '님'"></span>
-		<a th:href="@{/user/logout}">로그아웃</a>
-	</span>
+		<span th:if="${session.user != null}" style="display: flex; align-items: center; gap: 10px;">
+			<a th:href="@{/rewards}" style="text-decoration: none;">
+				<i class="fas fa-coins" style="color: orange;"></i>
+				<span style="font-size: 14px;">리워드 내역</span>
+			</a>
+			<div style="width:1px; height:16px; background-color:#ccc;"></div>
+				<span th:text="${session.user.name} + '님'"></span>
+			<a th:href="@{/user/logout}">로그아웃</a>
+		</span>
+
 	</nav>
 
 	<!-- Main -->

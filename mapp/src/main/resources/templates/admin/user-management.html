@@ -200,10 +200,15 @@
         </ul>
 
         <!-- 로그인 상태 표시 -->
-        <span th:if="${session.user != null}">
-		<span th:text="${session.user.name} + '님'"></span>
-		<a th:href="@{/user/logout}">로그아웃</a>
-	</span>
+        <span th:if="${session.user != null}" style="display: flex; align-items: center; gap: 10px;">
+			<a th:href="@{/rewards}" style="text-decoration: none;">
+				<i class="fas fa-coins" style="color: orange;"></i>
+				<span style="font-size: 14px;">리워드 내역</span>
+			</a>
+			<div style="width:1px; height:16px; background-color:#ccc;"></div>
+				<span th:text="${session.user.name} + '님'"></span>
+			<a th:href="@{/user/logout}">로그아웃</a>
+		</span>
     </nav>
 
     <!-- Main -->

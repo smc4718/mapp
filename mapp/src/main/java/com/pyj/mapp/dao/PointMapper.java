@@ -9,7 +9,7 @@ import java.util.List;
 @Mapper
 public interface PointMapper {
     void insertPoint(@Param("userNo") int userNo, @Param("orderNo") Long orderNo,
-                     @Param("amount") int amount, @Param("description") String description);
+                     @Param("amount") int amount, @Param("reason") String reason);
 
     List<PointDto> findByUserNo(@Param("userNo") int userNo);
 
