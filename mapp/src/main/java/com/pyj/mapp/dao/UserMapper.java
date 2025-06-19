@@ -16,4 +16,7 @@ public interface UserMapper {
     List<UserDto> findAll();
 
     void addMappPoint(@Param("userNo") int userNo, @Param("amount") int amount);
+
+    UserDto findUserByUserNo(@Param("userNo") int userNo);
+
 }

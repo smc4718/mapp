@@ -111,4 +111,9 @@ public class UserServiceImpl implements UserService {
         return userMapper.findAll();
     }
 
+    @Override
+    public UserDto getUserByUserNo(int userNo) {
+        return userMapper.findUserByUserNo(userNo);
+    }
+
 }

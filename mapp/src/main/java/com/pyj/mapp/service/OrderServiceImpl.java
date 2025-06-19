@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -26,5 +27,10 @@ public class OrderServiceImpl implements OrderService {
 
         // 수당 분배
         compensationService.distributeCompensation(order);
+    }
+
+    @Override
+    public List<OrderDto> findOrdersByUserNo(int userNo) {
+        return orderMapper.findOrdersByUserNo(userNo);
     }
 }

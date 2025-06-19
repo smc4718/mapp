@@ -38,4 +38,11 @@
          ORDER BY CREATED_AT DESC
     </select>
 
+    <select id="findOrdersByUserNo" parameterType="int" resultType="OrderDto">
+        SELECT ORDER_NO, BUYER_USER_NO, AMOUNT, ORDER_DATE
+          FROM ORDER_T
+         WHERE BUYER_USER_NO = #{userNo}
+         ORDER BY ORDER_DATE DESC
+    </select>
+
 </mapper>

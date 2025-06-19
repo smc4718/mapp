@@ -29,4 +29,10 @@
          WHERE P.USER_NO = #{userNo}
          ORDER BY P.CREATED_AT DESC
     </select>
+
+    <select id="sumPointByUserNo" resultType="int">
+        SELECT COALESCE(SUM(AMOUNT), 0)
+          FROM POINT_T
+         WHERE USER_NO = #{userNo}
+    </select>
 </mapper>

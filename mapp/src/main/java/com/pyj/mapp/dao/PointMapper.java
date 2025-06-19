@@ -13,4 +13,6 @@ public interface PointMapper {
 
     List<PointDto> findByUserNo(@Param("userNo") int userNo);
 
+    int sumPointByUserNo(@Param("userNo") int userNo);
+
 }

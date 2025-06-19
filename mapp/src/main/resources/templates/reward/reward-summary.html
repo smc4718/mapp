@@ -147,7 +147,50 @@
     <!-- Main -->
     <div id="main">
 
-        <h2>💰 수당 내역</h2>
+        <h2>
+            💎 총 보유 포인트:
+            <span style="font-size: 20px; font-weight: bold; color: orange;" th:text="${totalPoint} + ' P'">0 P</span>
+        </h2>
+
+        <h2>📌 포인트 내역 (직급 및 하위 세대별 비율 지급)</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>주문번호</th>
+                <th>포인트</th>
+                <th>설명</th>
+                <th>적립일</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="p : ${points}">
+                <td th:text="${p.orderNo}">123</td>
+                <td th:text="${p.amount}">5000</td>
+                <td th:text="${p.reason}">1세대 추천 수당</td>
+                <td th:text="${#dates.format(p.createdAt, 'yyyy-MM-dd HH:mm')}">2025-06-19</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <h2>🛒 구매 내역</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>주문번호</th>
+                <th>구매일</th>
+                <th>금액</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="o : ${orderList}">
+                <td th:text="${o.orderNo}">123</td>
+                <td th:text="${#dates.format(o.orderDate, 'yyyy-MM-dd HH:mm')}">2025-06-19</td>
+                <td th:text="${o.amount}">100000</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <h2>💰 수당 내역 (직급 및 하위 세대별 비율 지급)</h2>
         <table>
             <thead>
             <tr>
@@ -165,26 +208,6 @@
                 <td th:text="${c.rate}">0.05</td>
                 <td th:text="${c.amount}">5000</td>
                 <td th:text="${#dates.format(c.paidAt, 'yyyy-MM-dd HH:mm')}">2025-06-19</td>
-            </tr>
-            </tbody>
-        </table>
-
-        <h2>📌 포인트 내역</h2>
-        <table>
-            <thead>
-            <tr>
-                <th>주문번호</th>
-                <th>포인트</th>
-                <th>설명</th>
-                <th>적립일</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="p : ${points}">
-                <td th:text="${p.orderNo}"></td>
-                <td th:text="${p.amount}"></td>
-                <td th:text="${p.reason}"></td>
-                <td th:text="${#dates.format(p.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
             </tr>
             </tbody>
         </table>

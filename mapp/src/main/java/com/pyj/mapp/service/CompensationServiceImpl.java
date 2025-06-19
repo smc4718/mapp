@@ -85,4 +85,9 @@ public class CompensationServiceImpl implements CompensationService {
             default -> 0.0;
         };
     }
+
+    @Override
+    public List<CompensationDto> findByReceiverUserNo(int userNo) {
+        return compensationMapper.findByReceiverUserNo(userNo);
+    }
 }

@@ -22,4 +22,6 @@ public interface UserService {
 
     //회원 목록 가져오기
     List<UserDto> getAllUsers();
+
+    UserDto getUserByUserNo(int userNo);
 }
