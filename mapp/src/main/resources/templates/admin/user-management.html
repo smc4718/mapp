@@ -227,6 +227,7 @@
                         <th>성별</th>
                         <th>이메일</th>
                         <th>H.P</th>
+                        <th>보유 포인트</th>
                         <th>직급</th>
                         <th>고유 추천 코드</th>
                         <th>가입일</th>
@@ -241,6 +242,7 @@
                         <td th:text="${user.gender == 'M' ? '남' : (user.gender == 'F' ? '여' : '')}"></td>
                         <td th:text="${user.email}"></td>
                         <td th:text="${user.hp}"></td>
+                        <td th:text="${user.mappPoint}"></td>
                         <td th:text="${user.grade}"></td>
                         <td th:text="${user.referralCode}"></td>
                         <td th:text="${#dates.format(user.joinedAt, 'yyyy년 MM월 dd일 HH:mm')}"></td>
