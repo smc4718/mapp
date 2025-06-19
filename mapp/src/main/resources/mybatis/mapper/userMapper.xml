@@ -20,8 +20,7 @@
         <result column="MAPP_POINT"          property="mappPoint"/>
     </resultMap>
 
-
-    <!-- 사용자 로그인용 쿼리 (ID와 PW가 모두 null이 아닌 경우에만 실행됨) -->
+    <!-- 사용자 로그인용 쿼리 -->
     <select id="getUser" parameterType="Map" resultType="UserDto">
         SELECT USER_NO, ID, PW, NAME, GENDER, EMAIL, HP, REFERRAL_CODE, ROLE, JOINED_AT
           FROM USER_T
@@ -35,44 +34,44 @@
     <!-- 회원 목록 -->
     <select id="findAll" resultType="UserDto">
         SELECT *
-        FROM USER_T
-        ORDER BY USER_NO
+          FROM USER_T
+         ORDER BY USER_NO
     </select>
 
     <!-- 회원 등록 -->
     <insert id="insertUser" parameterType="UserDto">
         <selectKey keyProperty="userNo" resultType="int" order="BEFORE">
-            SELECT USER_SEQ.NEXTVAL FROM DUAL
+            SELECT IFNULL(MAX(USER_NO), 0) + 1
+              FROM USER_T
         </selectKey>
         INSERT INTO USER_T (
-            USER_NO
-          , ID
-          , PW
-          , NAME
-          , GENDER
-          , EMAIL
-          , HP
-          , REFERRAL_CODE
-          , ROLE
-          , GRADE
-          , MAPP_POINT
-          , JOINED_AT
+        USER_NO
+        , ID
+        , PW
+        , NAME
+        , GENDER
+        , EMAIL
+        , HP
+        , REFERRAL_CODE
+        , ROLE
+        , GRADE
+        , MAPP_POINT
+        , JOINED_AT
         ) VALUES (
-            #{userNo}
-          , #{id}
-          , #{pw}
-          , #{name}
-          , #{gender}
-          , #{email}
-          , #{hp}
-          , #{referralCode}
-          , #{role}
-          , #{grade}
-          , #{mappPoint}
-          , SYSDATE
+        #{userNo}
+        , #{id}
+        , #{pw}
+        , #{name}
+        , #{gender}
+        , #{email}
+        , #{hp}
+        , #{referralCode}
+        , #{role}
+        , #{grade}
+        , #{mappPoint}
+        , NOW()
         )
     </insert>
-
 
     <!-- ID로 회원 조회 -->
     <select id="findById" parameterType="String" resultType="UserDto">
@@ -90,7 +89,7 @@
 
     <update id="addMappPoint">
         UPDATE USER_T
-           SET MAPP_POINT = NVL(MAPP_POINT, 0) + #{amount}
+           SET MAPP_POINT = IFNULL(MAPP_POINT, 0) + #{amount}
          WHERE USER_NO = #{userNo}
     </update>
 

@@ -1,6 +1,7 @@
 package com.pyj.mapp.service;
 
 import com.pyj.mapp.dao.ReferralMapper;
+import com.pyj.mapp.dto.CompensationTargetDto;
 import com.pyj.mapp.dto.ReferralDto;
 import com.pyj.mapp.dto.UserDto;
 import jakarta.annotation.PostConstruct;
@@ -105,7 +106,6 @@ public class ReferralServiceImpl implements ReferralService {
         return "M1";
     }
 
-    // 각 라인에 해당 조건 수 이상 있는지 확인
     private boolean checkLineCondition(List<Integer> referredList, int requiredCountPerLine) {
         int lineCount = 0;
         for (Integer subUserNo : referredList) {
@@ -117,4 +117,37 @@ public class ReferralServiceImpl implements ReferralService {
         return lineCount >= requiredCountPerLine;
     }
 
+    /**
+     * 구매자의 상위 7세대 추천자를 generation = 1부터 시작하여 반환
+     */
+    @Override
+    public List<CompensationTargetDto> getUplineTargets(int buyerUserNo) {
+        List<UserDto> allUsers = referralMapper.getAllReferralUsers();
+        Map<Integer, UserDto> userMap = allUsers.stream()
+                .collect(Collectors.toMap(UserDto::getUserNo, u -> u));
+
+        List<Integer> uplineUserNos = new ArrayList<>();
+        Integer currentUserNo = buyerUserNo;
+
+        // 위로 따라 올라가면서 추천인 번호를 수집
+        while (true) {
+            UserDto current = userMap.get(currentUserNo);
+            if (current == null) break;
+
+            Integer referrerNo = current.getReferredByUserNo();
+            if (referrerNo == null || !userMap.containsKey(referrerNo)) break;
+
+            uplineUserNos.add(referrerNo);
+            currentUserNo = referrerNo;
+        }
+
+        // 가장 상위 추천자가 generation 1이 되도록 역순 부여
+        List<CompensationTargetDto> targets = new ArrayList<>();
+        for (int i = uplineUserNos.size() - 1; i >= 0 && targets.size() < 7; i--) {
+            int generation = uplineUserNos.size() - i;
+            targets.add(new CompensationTargetDto(uplineUserNos.get(i), generation));
+        }
+
+        return targets;
+    }
 }

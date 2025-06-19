@@ -5,24 +5,30 @@
 
 <mapper namespace="com.pyj.mapp.dao.PointMapper">
 
+    <!-- 포인트 등록 -->
     <insert id="insertPoint">
+        <selectKey keyProperty="pointNo" resultType="int" order="BEFORE">
+            SELECT IFNULL(MAX(POINT_NO), 0) + 1
+              FROM POINT_T
+        </selectKey>
         INSERT INTO POINT_T (
-            POINT_NO
-          , USER_NO
-          , ORDER_NO
-          , AMOUNT
-          , REASON
-          , CREATED_AT
+          POINT_NO
+        , USER_NO
+        , ORDER_NO
+        , AMOUNT
+        , REASON
+        , CREATED_AT
         ) VALUES (
-            POINT_SEQ.NEXTVAL
-          , #{userNo}
-          , #{orderNo}
-          , #{amount}
-          , #{reason}
-          , SYSDATE
+          #{pointNo}
+        , #{userNo}
+        , #{orderNo}
+        , #{amount}
+        , #{reason}
+        , NOW()
         )
     </insert>
 
+    <!-- 사용자별 포인트 조회 -->
     <select id="findByUserNo" resultType="PointDto">
         SELECT P.POINT_NO, P.USER_NO, P.ORDER_NO, P.AMOUNT, P.REASON, P.CREATED_AT
           FROM POINT_T P
@@ -30,9 +36,11 @@
          ORDER BY P.CREATED_AT DESC
     </select>
 
+    <!-- 사용자별 포인트 총합 -->
     <select id="sumPointByUserNo" resultType="int">
         SELECT COALESCE(SUM(AMOUNT), 0)
           FROM POINT_T
          WHERE USER_NO = #{userNo}
     </select>
+
 </mapper>

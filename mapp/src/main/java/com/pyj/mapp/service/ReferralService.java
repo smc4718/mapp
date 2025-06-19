@@ -1,5 +1,6 @@
 package com.pyj.mapp.service;
 
+import com.pyj.mapp.dto.CompensationTargetDto;
 import com.pyj.mapp.dto.UserDto;
 
 import java.util.List;
@@ -20,4 +21,8 @@ public interface ReferralService {
 
     // 등급 계산
     String calculateGrade(int userNo);
+
+    List<CompensationTargetDto> getUplineTargets(int buyerUserNo);
+
+
 }

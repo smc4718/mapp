@@ -184,7 +184,7 @@
             <tbody>
             <tr th:each="o : ${orderList}">
                 <td th:text="${o.orderNo}">123</td>
-                <td th:text="${#dates.format(o.orderDate, 'yyyy-MM-dd HH:mm')}">2025-06-19</td>
+                <td th:text="${#dates.format(o.orderDatetime, 'yyyy-MM-dd HH:mm')}">2025-06-19</td>
                 <td th:text="${o.amount}">100000</td>
             </tr>
             </tbody>

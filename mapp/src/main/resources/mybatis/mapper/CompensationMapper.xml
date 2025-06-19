@@ -6,25 +6,28 @@
 <mapper namespace="com.pyj.mapp.dao.CompensationMapper">
 
     <insert id="insertOne" parameterType="CompensationDto">
+        <selectKey keyProperty="compensationNo" resultType="long" order="BEFORE">
+            SELECT IFNULL(MAX(COMPENSATION_NO), 0) + 1
+              FROM COMPENSATION_T
+        </selectKey>
         INSERT INTO COMPENSATION_T (
-            COMPENSATION_NO
-          , RECEIVER_USER_NO
-          , ORDER_NO
-          , GENERATION
-          , RATE
-          , AMOUNT
-          , PAID_AT
+          COMPENSATION_NO
+        , RECEIVER_USER_NO
+        , ORDER_NO
+        , GENERATION
+        , RATE
+        , AMOUNT
+        , PAID_AT
         ) VALUES (
-            COMPENSATION_SEQ.NEXTVAL
-          , #{receiverUserNo}
-          , #{orderNo}
-          , #{generation}
-          , #{rate}
-          , #{amount}
-          , #{paidAt}
+          #{compensationNo}
+        , #{receiverUserNo}
+        , #{orderNo}
+        , #{generation}
+        , #{rate}
+        , #{amount}
+        , #{paidAt}
         )
     </insert>
-
 
     <select id="findByReceiverUserNo" resultType="CompensationDto" parameterType="int">
         SELECT *

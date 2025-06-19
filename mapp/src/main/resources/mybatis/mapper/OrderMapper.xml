@@ -5,32 +5,35 @@
 
 <mapper namespace="com.pyj.mapp.dao.OrderMapper">
 
+    <!-- 주문 단건 조회 -->
     <select id="findById" resultType="OrderDto">
         SELECT *
           FROM ORDER_T
          WHERE ORDER_NO = #{orderNo}
     </select>
 
+    <!-- 주문 등록 -->
     <insert id="insertOrder" parameterType="OrderDto">
         <selectKey keyProperty="orderNo" resultType="long" order="BEFORE">
-            SELECT ORDER_SEQ.NEXTVAL
-              FROM DUAL
+            SELECT IFNULL(MAX(ORDER_NO), 0) + 1
+              FROM ORDER_T
         </selectKey>
         INSERT INTO ORDER_T (
-            ORDER_NO
-          , BUYER_USER_NO
-          , AMOUNT
-          , ORDER_DATE
-          , USED_COUPON_YN
+          ORDER_NO
+        , BUYER_USER_NO
+        , AMOUNT
+        , ORDER_DATETIME
+        , USED_COUPON_YN
         ) VALUES (
-            #{orderNo}
-          , #{buyerUserNo}
-          , #{amount}
-          , SYSDATE
-          , 'N'
+          #{orderNo}
+        , #{buyerUserNo}
+        , #{amount}
+        , NOW()
+        , 'N'
         )
     </insert>
 
+    <!-- 사용자별 포인트 내역 -->
     <select id="findPointsByUserNo" resultType="PointDto">
         SELECT POINT_NO, USER_NO, ORDER_NO, AMOUNT, REASON, CREATED_AT
           FROM POINT_T
@@ -38,11 +41,12 @@
          ORDER BY CREATED_AT DESC
     </select>
 
+    <!-- 사용자별 주문 내역 -->
     <select id="findOrdersByUserNo" parameterType="int" resultType="OrderDto">
-        SELECT ORDER_NO, BUYER_USER_NO, AMOUNT, ORDER_DATE
+        SELECT ORDER_NO, BUYER_USER_NO, AMOUNT, ORDER_DATETIME
           FROM ORDER_T
          WHERE BUYER_USER_NO = #{userNo}
-         ORDER BY ORDER_DATE DESC
+         ORDER BY ORDER_DATETIME DESC
     </select>
 
 </mapper>

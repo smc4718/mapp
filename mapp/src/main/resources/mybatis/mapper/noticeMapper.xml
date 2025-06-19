@@ -11,16 +11,16 @@
         <result column="CONTENTS"   property="contents" />
         <result column="HIT"        property="hit" />
         <result column="CREATED_AT" property="createdAt" />
-        <association javaType="UserDto"     property="userDto">
-            <id         column="USER_NO"         property="userNo" />
-            <result     column="ID"              property="id" />
-            <result     column="PW"              property="pw" />
-            <result     column="NAME"            property="name" />
-            <result     column="GENDER"          property="gender" />
-            <result     column="EMAIL"           property="email" />
-            <result     column="HP"              property="hp" />
-            <result     column="REFERRAL_CODE"   property="referralCode" />
-            <result     column="JOINED_AT"       property="joinedAt" />
+        <association javaType="UserDto" property="userDto">
+            <id     column="USER_NO"       property="userNo" />
+            <result column="ID"            property="id" />
+            <result column="PW"            property="pw" />
+            <result column="NAME"          property="name" />
+            <result column="GENDER"        property="gender" />
+            <result column="EMAIL"         property="email" />
+            <result column="HP"            property="hp" />
+            <result column="REFERRAL_CODE" property="referralCode" />
+            <result column="JOINED_AT"     property="joinedAt" />
         </association>
     </resultMap>
 
@@ -32,12 +32,12 @@
 
     <!-- 공지 리스트 -->
     <select id="getNoticeList" parameterType="Map" resultMap="NoticeMap">
-        SELECT NOTICE_NO, USER_NO, TITLE, CONTENTS, HIT, CREATED_AT, ID, PW, NAME, GENDER, EMAIL, HP, REFERRAL_CODE, JOINED_AT
+        SELECT *
           FROM (SELECT N.NOTICE_NO, N.USER_NO, N.TITLE, N.CONTENTS, N.HIT, N.CREATED_AT,
                        U.ID, U.PW, U.NAME, U.GENDER, U.EMAIL, U.HP, U.REFERRAL_CODE, U.JOINED_AT,
                        ROW_NUMBER() OVER (ORDER BY N.NOTICE_NO DESC) AS RN
                   FROM NOTICE_T N LEFT JOIN USER_T U
-                       ON N.USER_NO = U.USER_NO)
+                       ON N.USER_NO = U.USER_NO) AS TEMP
          WHERE RN BETWEEN #{begin} AND #{end}
     </select>
 
@@ -53,27 +53,27 @@
     <!-- 공지 등록 -->
     <insert id="insertNotice" parameterType="NoticeDto">
         <selectKey order="BEFORE" keyProperty="noticeNo" resultType="int">
-            SELECT NOTICE_SEQ.NEXTVAL
-              FROM DUAL
+            SELECT IFNULL(MAX(NOTICE_NO), 0) + 1
+              FROM NOTICE_T
         </selectKey>
-        INSERT INTO NOTICE_T(
-            NOTICE_NO
-          , USER_NO
-          , TITLE
-          , CONTENTS
-          , HIT
-          , CREATED_AT
+        INSERT INTO NOTICE_T (
+          NOTICE_NO
+        , USER_NO
+        , TITLE
+        , CONTENTS
+        , HIT
+        , CREATED_AT
         ) VALUES (
-            #{noticeNo}
-          , #{userDto.userNo}
-          , #{title}
-          , #{contents}
-          , NVL(#{hit}, 0) <!-- 기본값 0 -->
-          , TO_CHAR(SYSDATE, 'YYYY-MM-DD') <!-- 현재 시간 설정 -->
+          #{noticeNo}
+        , #{userDto.userNo}
+        , #{title}
+        , #{contents}
+        , IFNULL(#{hit}, 0)
+        , DATE_FORMAT(NOW(), '%Y-%m-%d')
         )
     </insert>
 
-    <!-- 공지 수정하기 -->
+    <!-- 공지 수정 -->
     <update id="updateNotice" parameterType="NoticeDto">
         UPDATE NOTICE_T
            SET TITLE = #{title},
@@ -81,7 +81,7 @@
          WHERE NOTICE_NO = #{noticeNo}
     </update>
 
-    <!-- 공지 삭제하기 -->
+    <!-- 공지 삭제 -->
     <delete id="deleteNotice" parameterType="int">
         DELETE
           FROM NOTICE_T
@@ -97,11 +97,11 @@
 
     <!-- 이미지 삽입 -->
     <insert id="insertNoticeImage" parameterType="NoticeImageDto">
-        INSERT INTO NOTICE_IMAGE_T(
+        INSERT INTO NOTICE_IMAGE_T (
           NOTICE_NO
         , IMAGE_PATH
         , FILESYSTEM_NAME
-        ) VALUES(
+        ) VALUES (
           #{noticeNo}
         , #{imagePath}
         , #{filesystemName}
@@ -128,6 +128,5 @@
           FROM NOTICE_IMAGE_T
          WHERE NOTICE_NO = #{noticeNo}
     </delete>
-
 
 </mapper>

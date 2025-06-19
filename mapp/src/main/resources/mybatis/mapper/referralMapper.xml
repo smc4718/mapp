@@ -22,16 +22,20 @@
 
     <!-- 추천 관계 입력 -->
     <insert id="insertReferral" parameterType="map">
+        <selectKey keyProperty="referralNo" resultType="int" order="BEFORE">
+            SELECT IFNULL(MAX(REFERRAL_NO), 0) + 1
+              FROM REFERRAL_T
+        </selectKey>
         INSERT INTO REFERRAL_T (
-        REFERRAL_NO
+          REFERRAL_NO
         , REFERRER_NO
         , REFERRED_NO
         , CREATED_AT
         ) VALUES (
-        REFERRAL_SEQ.NEXTVAL
+          #{referralNo}
         , #{referrerNo}
         , #{referredNo}
-        , SYSDATE
+        , NOW()
         )
     </insert>
 
@@ -69,14 +73,5 @@
            SET GRADE = #{grade}
          WHERE USER_NO = #{userNo}
     </update>
-
-    <select id="getUplinesByGeneration" parameterType="int" resultType="UserDto">
-         SELECT U.USER_NO, U.GRADE, R.REFERRER_NO, LEVEL AS generation
-           FROM REFERRAL_T R JOIN USER_T U
-                ON U.USER_NO = R.REFERRER_NO
-          START WITH R.REFERRED_NO = #{userNo}
-        CONNECT BY PRIOR R.REFERRER_NO = R.REFERRED_NO
-                AND LEVEL &lt;= 7
-    </select>
 
 </mapper>

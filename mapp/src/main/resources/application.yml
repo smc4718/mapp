@@ -2,10 +2,10 @@
 spring:
   datasource:
     hikari:
-      driver-class-name: oracle.jdbc.OracleDriver
-      jdbc-url: jdbc:oracle:thin:@localhost:1521:xe
-      username: MAPP
-      password: 1111
+      driver-class-name: org.mariadb.jdbc.Driver
+      jdbc-url: jdbc:mariadb://localhost:3306/mapp  # DB 이름: mapp
+      username: root
+      password: 1735
 
   thymeleaf:
     cache: false  #어플 재실행 없이 실시간 타임리프 반영이기에, 배포시에는 설정 지우거나, 반드시 true 로 바꿔줘야함

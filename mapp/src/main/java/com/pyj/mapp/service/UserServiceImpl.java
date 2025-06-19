@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -54,16 +55,16 @@ public class UserServiceImpl implements UserService {
         // 5. 유저 저장
         userMapper.insertUser(userDto);  // userDto.userNo가 자동 생성되었다고 가정
 
-        // 6. 추천 관계 저장
+        // 7. 추천 관계 저장
         if (referrer != null) {
-            referralMapper.insertReferral(Map.of(
-                    "referrerNo", referrer.getUserNo(),
-                    "referredNo", userDto.getUserNo()
-            ));
-        }
+            Map<String, Object> param = new HashMap<>();
+            param.put("referrerNo", referrer.getUserNo());
+            param.put("referredNo", userDto.getUserNo());
+            referralMapper.insertReferral(param);
 
-        // 추천한 referrer의 등급 자동 업데이트
-        referralService.updateUserGrade(referrer.getUserNo());
+            // 8. 추천한 referrer의 등급 자동 업데이트
+            referralService.updateUserGrade(referrer.getUserNo());
+        }
     }
 
     @Override

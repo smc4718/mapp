@@ -20,7 +20,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public void processOrder(OrderDto order) {
         // 주문 날짜 설정
-        order.setOrderDate(new Date());
+        order.setOrderDatetime(new Date());
 
         // DB에 주문 저장
         orderMapper.insertOrder(order);

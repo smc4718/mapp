@@ -13,7 +13,7 @@ import java.util.Date;
 @Builder
 public class ReferralDto {
     private Long referralNo;
-    private int referrerNo;   // 추천한 사람
-    private int referredNo;   // 추천받은 사람
+    private Long referrerNo;   // 추천한 사람
+    private Long referredNo;   // 추천받은 사람
     private Date createdAt;
 }
