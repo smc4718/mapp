@@ -1,6 +1,7 @@
 # 🌐 MAPP – Referral-based Reward System
 
 mapp 프로젝트 과제.
+
 회원가입 -> 추천인 입력시 추천받은 사람의 밑으로 세대 구분. 
 
 > 추천인 구조 기반의 구매 리워드 시스템  
